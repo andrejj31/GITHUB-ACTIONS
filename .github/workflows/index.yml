@@ -51,4 +51,4 @@ jobs:
           context: .
           push: true
           tags: |
-            andrejj31/my-image:${{ steps.extract_branch.outputs.branch }}-latest
+            andrejj31/githubactions:${{ steps.extract_branch.outputs.branch }}-latest
