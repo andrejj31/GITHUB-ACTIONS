@@ -18,7 +18,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          # Full git history is needed to get a proper list of changed files within `super-linter`
           fetch-depth: 0
 
       - name: Lint Code Base
@@ -36,7 +35,9 @@ jobs:
 
       - name: Extract branch name
         id: extract_branch
-        run: echo "branch=$(echo ${GITHUB_REF#refs/heads/} | tr '/' '-')" >> $GITHUB_OUTPUT
+        run: |
+          branch="$(echo "${GITHUB_REF#refs/heads/}" | tr '/' '-')"
+          echo "branch=$branch" >> "$GITHUB_OUTPUT"
 
       - name: Log in to DockerHub
         run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
@@ -50,4 +51,4 @@ jobs:
           context: .
           push: true
           tags: |
-            your-dockerhub-username/my-image:${{ steps.extract_branch.outputs.branch }}-latest
+            andrejj31/my-image:${{ steps.extract_branch.outputs.branch }}-latest
